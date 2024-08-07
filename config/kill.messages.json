@@ -1,0 +1,28 @@
+{
+    "deathMessages": [
+        "{target} was killed by {username}!",
+        "{target} was sliced by {username} with a sword!",
+        "{target} was shot by {username} using a bow!",
+        "{target} was defenestrated by {username}!",
+        "{target} was chucked into a volcano by {username}!",
+        "{target} was stabbed by {username}!",
+        "{target} picked the wrong house and got hit with a bat by {username}!",
+        "{target} got hit by a car driven by {username}!",
+        "{target} was pushed off a cliff by {username}!",
+        "{target} was pushed into a pool of acid by {username}!",
+        "{target} was pushed off a building by {username}!",
+        "{target} was fed a cleaver by {username}!",
+        "{target} was blasted by a powerwasher by {username}!",
+        "{target} was exploded by {username}!",
+        "{target} was given a tour of the sun by {username}!",
+        "{target} was sent to the shadow realm by {username}!",
+        "{target} was killed by a arrow to the knee by {username}!",
+        "{target} was eaten by {username}!",
+        "{target} was drowned by {username}!",
+        "{target} was exploded by {username} dropping a creeper on their head!",
+        "{target} was fed to a sentient artifical intelligence disguised as a discord bot by {username}!",
+        "{target} was killed by {username} using a nuke!",
+        "{target} forgot that {username} took their oxygen tank and suffocated",
+        "{username} killed {target} with a spoon!"
+    ]
+}
