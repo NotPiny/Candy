@@ -1,5 +1,5 @@
-# Candy Bot
-Candy Bot is a Discord user app that is focused on providing useful and fun features / commands to discord users.
+# Candy
+Candy is a Discord user app that is focused on providing useful and fun features / commands to discord users.
 
 ## Why user apps?
 Simply put, traditional bots are limited in the way that you can only use their features inside of a server that they are in. User apps are different and can be used in any server / dm that you are in. However, servers can still choose to block user apps if they wish to do so in which case the app will not be able to send messages in that server with it simply becoming private instead.
