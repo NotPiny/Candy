@@ -8,7 +8,7 @@ Simply put, traditional bots are limited in the way that you can only use their 
 To use the app, you must first either invite it to a server or add it to your account using the following links: [Server](https://discord.com/oauth2/authorize?client_id=1270311327767855137&integration_type=0&scope=applications.commands) | [User](https://discord.com/oauth2/authorize?client_id=1270311327767855137&integration_type=1&scope=applications.commands)<br/>
 
 Then you can simply just type `/` in any server or dm that you are in and you will be able to use the app's commands. <br/>
-<sup>Note: The app will be available anyone in your server will be able to use it but not outside the server</sup>
+<sup>Note: The app will be available to anyone in your server will be able to use it but not outside the server if you used the server link</sup>
 
 ## Commands
 - `/ping` - Checks if the app is online and its latency
@@ -16,9 +16,13 @@ Then you can simply just type `/` in any server or dm that you are in and you wi
 - `/rp` - Roleplay commands
   - `/rp kill` - Kills a user
 
-# Future plans
 ## Context menus ("Apps >" menu)
-- Details
+- `Details` - Shows details about the target message
+
+<br/>
+
+# Future plans
+## Context (Message)
 - Modify
 
 # Developer stuff
@@ -35,3 +39,5 @@ Wow thanks for wanting to contribute! Just open a pull request and I'll take a l
 
 ## License
 This project is fairly basic so I don't really care what you do with it. Just don't claim it as your own and we're good. If you want to use it for something, go ahead. If you want to modify it, go ahead. If you want to sell it, don't. This is meant to be free but apart from that I'm chill with most things.
+
+(Part of [DaalBot](https://daalbot.xyz), any support for this app is done through the [support server](https://lnk.daalbot.xyz/HQ?ref=cndyrm) for DaalBot)

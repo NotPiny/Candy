@@ -9,7 +9,6 @@ client.on('ready', () => {
     console.log('Bot is ready');
 
     const defaultOptions = {
-        type: ApplicationCommandType.ChatInput,
         integration_types: [0, 1],
         contexts: [0, 1, 2]
     }
@@ -22,6 +21,21 @@ client.on('ready', () => {
         client.rest.post(Routes.applicationCommands(client.user.id), {
             body: {
                 ...command,
+                type: ApplicationCommandType.ChatInput,
+                ...defaultOptions
+            }
+        })
+    }
+
+    const messageContexts = fs.readdirSync('./context/message').filter(file => file.endsWith('.js'));
+    
+    for (let i = 0; i < messageContexts.length; i++) {
+        const details = require(`./context/message/${messageContexts[i]}`);
+
+        client.rest.post(Routes.applicationCommands(client.user.id), {
+            body: {
+                ...details,
+                type: ApplicationCommandType.Message,
                 ...defaultOptions
             }
         })
@@ -29,11 +43,18 @@ client.on('ready', () => {
 })
 
 client.on('interactionCreate', async interaction => {
-    if (!interaction.isChatInputCommand()) return;
+    if (interaction.isChatInputCommand()) {
+        if (fs.existsSync(`./commands/${interaction.commandName}.js`)) {
+            const command = require(`./commands/${interaction.commandName}.js`);
+            command.run({interaction});
+        }
+    }
 
-    if (fs.existsSync(`./commands/${interaction.commandName}.js`)) {
-        const command = require(`./commands/${interaction.commandName}.js`);
-        command.run({interaction});
+    if (interaction.isMessageContextMenuCommand()) {
+        if (fs.existsSync(`./context/message/${interaction.commandName.toLowerCase()}.js`)) {
+            const file = require(`./context/message/${interaction.commandName.toLowerCase()}.js`);
+            file.run({interaction});
+        }
     }
 })
 
