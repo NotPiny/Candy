@@ -15,6 +15,7 @@ Then you can simply just type `/` in any server or dm that you are in and you wi
 - `/help` - Shows a list of all the commands that the app has
 - `/rp` - Roleplay commands
   - `/rp kill` - Kills a user
+  - `/rp *` - Refer to [commands/rp.js#L4](https://github.com/NotPiny/Candy/blob/master/commands/rp.js#L4)
 
 ## Context menus ("Apps >" menu)
 - `Details` - Shows details about the target message
