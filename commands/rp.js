@@ -10,6 +10,13 @@ const categories = [
         content: `**[USERNAME]** pet **[TARGET]**!`,
     },
     {
+        name: 'hug',
+        description: 'Give someone a warm hug!',
+        selfText: 'You can\'t hug yourself silly!',
+        botText: 'I\'m not really the hugging type...',
+        content: `**[USERNAME]** hugged **[TARGET]**!`,
+    },
+    {
         name: 'slap',
         description: 'Give someone a juicy slap',
         selfText: 'StOp HiTtInG yOuRsElF :rolling_eyes:',
@@ -32,6 +39,26 @@ const categories = [
         selfText: 'BAD! No biting yourself!',
         botText: 'I\'m not a chew toy...',
         content: `**[USERNAME]** wanted a little taste of **[TARGET]**!`,
+        apis: [
+            'https://api.waifu.pics/sfw/'
+        ]
+    },
+    {
+        name: 'poke',
+        description: 'Whats wrong with a little poke?',
+        selfText: 'StOp HiTtInG yOuRsElF :rolling_eyes:',
+        botText: 'My face is not a touch screen...',
+        content: `**[USERNAME]** poked **[TARGET]**!`,
+        apis: [
+            'https://api.waifu.pics/sfw/'
+        ]
+    },
+    {
+        name: 'kiss',
+        description: 'Give someone a little smooch',
+        selfText: 'How exactly.. do you plan on doing ...that??????',
+        botText: `I'm a bot i dont have bloody lips`,
+        content: `**[USERNAME]** kissed **[TARGET]**!`,
         apis: [
             'https://api.waifu.pics/sfw/'
         ]
@@ -98,19 +125,6 @@ module.exports = {
                     required: true
                 }
             ]
-        },
-        {
-            name: 'hug',
-            description: `Give someone a hug!`,
-            type: ApplicationCommandOptionType.Subcommand,
-            options: [
-                {
-                    name: 'target',
-                    description: 'The user to hug',
-                    type: ApplicationCommandOptionType.User,
-                    required: true
-                }
-            ]
         }
     ].concat(categories.map(c => ({
         name: c.name,
@@ -129,6 +143,7 @@ module.exports = {
 
 /**@param {{ interaction: ChatInputCommandInteraction }} param0*/
 module.exports.run = async({interaction}) => {
+    await interaction.deferReply();
     const subcommand = interaction.options.getSubcommand();
     if (subcommand === 'kill') {
         const target = interaction.options.getUser('target');
@@ -175,7 +190,7 @@ module.exports.run = async({interaction}) => {
         }
 
         if (checkInput() !== false) {
-            return await interaction.reply({
+            return await interaction.editReply({
                 content: checkInput(),
             })
         }
@@ -185,7 +200,7 @@ module.exports.run = async({interaction}) => {
         const res = await axios.get(api);
         const image = res.data.url;
 
-        return await interaction.reply({
+        return await interaction.editReply({
             content: `**${interaction.user.displayName}** hugged **${target.displayName}**!`,
             files: [
                 {
@@ -198,7 +213,7 @@ module.exports.run = async({interaction}) => {
 
     // Unspecific subcommand (rely on categories)
     const category = categories.find(c => c.name === subcommand);
-    if (!category) return await interaction.reply({
+    if (!category) return await interaction.editReply({
         content: `That just doesnt seem to be a valid category...`,
         ephemeral: true
     });
@@ -208,12 +223,12 @@ module.exports.run = async({interaction}) => {
         
         switch (target?.id) { // Check if the target is self or bot (in the event of target being null this will not run)
             case interaction.user.id:
-                return await interaction.reply({
+                return await interaction.editReply({
                     content: category.selfText || `You can't ${category.name} yourself silly!`,
                     ephemeral: true
                 });
             case interaction.client.user.id:
-                return await interaction.reply({
+                return await interaction.editReply({
                     content: category.botText || `I'm not really the ${category.name} type...`,
                     ephemeral: true
                 });
@@ -224,7 +239,7 @@ module.exports.run = async({interaction}) => {
             'https://nekos.life/api/v2/img/'
         ]);
 
-        await interaction.reply({
+        await interaction.editReply({
             content: category.content.replace('[USERNAME]', interaction.user.displayName).replace('[TARGET]', target?.displayName),
             files: [
                 {
@@ -235,7 +250,7 @@ module.exports.run = async({interaction}) => {
         })
     } catch (e) {
         console.error(e);
-        await interaction.reply({
+        await interaction.editReply({
             content: `An error occurred, please try again later.`,
             ephemeral: true
         })

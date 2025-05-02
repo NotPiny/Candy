@@ -1,9 +1,30 @@
 const {Client, Routes, ApplicationCommandType, ApplicationCommandOptionType} = require('discord.js');
 const fs = require('fs');
 require('dotenv').config();
+const crypto = require('crypto');
 const client = new Client({
     intents: []
 });
+async function hash(str){return crypto.createHash('sha256').update(str).digest('hex');}
+async function encrypt(str, key) {const cipher = crypto.createCipher('aes-256-cbc', key);let encrypted = cipher.update(str, 'utf8', 'hex');encrypted += cipher.final('hex');return encrypted;}
+async function decrypt(str, key) {const decipher = crypto.createDecipher('aes-256-cbc', key);let decrypted = decipher.update(str, 'hex', 'utf8');decrypted += decipher.final('utf8');return decrypted;}
+async function read(guild, key) {
+    /**
+     * Each object will have its own unique hash that also depends on the guild
+     * The guild has its own subfolder to ensure easy removal of data if need be
+    */
+    const filepath = `./data/` + hash(guild) + `/${hash(guild + key)}.json`;
+    if (!fs.existsSync(filepath)) return null;
+
+    const data = fs.readFileSync(filepath, 'utf-8');
+    return JSON.parse(await decrypt(data, guild)); // Encrypted with the guild id for the sake of having data be a bit more secure (this isnt even sensitive data)
+}
+
+async function write(guild, key, data) {
+    const filepath = `./data/` + hash(guild) + `/${hash(guild + key)}.json`;
+    if (!fs.existsSync(`./data/` + hash(guild))) fs.mkdirSync(`./data/` + hash(guild)); // Cant forget this or we get big scary errors
+    fs.writeFileSync(filepath, await encrypt(JSON.stringify(data), guild));
+}
 
 client.on('ready', () => {
     console.log('Bot is ready');
@@ -56,6 +77,18 @@ client.on('interactionCreate', async interaction => {
             file.run({interaction});
         }
     }
+})
+
+client.on('messageCreate', async message => {
+    let prefix = await read(message.guild.id, 'prefix');
+    if (!prefix) prefix = 'c!' && await write(message.guild.id, 'prefix', 'c!'); // Apply default prefix if it doesnt exist
+
+    if (message.author.bot || !message.content.startsWith(prefix)) return;
+
+    const args = message.content.slice(prefix.length).trim().split(' ');
+    const command = args.shift().toLowerCase();
+
+    // These have no actual handler, they are mostly just text versions of the slash commands for the sake of being able to use the bot in a more traditional way
 })
 
 fs.existsSync(`/home/piny/.pm2/logs/CandyDis-out.log`) ? fs.writeFileSync(`/home/piny/.pm2/logs/CandyDis-out.log`, '') : null;
